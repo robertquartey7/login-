@@ -23,7 +23,7 @@ a{
 
 .navbar{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-around !important;
     background-color: black;
     color: white;
 }

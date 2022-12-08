@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./App.css";
 
-// navbar
+const users = [];
+
 function Navbar() {
   return (
     <div className="navbar">
@@ -24,27 +26,149 @@ function SideBar() {
   );
 }
 
+
+function Welcome({name}){
+  return(
+    <div>
+      <h1>Welcome {name}</h1>
+    </div>
+  )
+}
+
 // layout
 function Layout() {
-  return (
-    <div className="layout">
-      <h1>Hello world</h1>
+  const [isShowLogin, setIsShowLogin] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [isLogged, setIsLogged] = useState(false)
 
-      <form action="" className="form">
-        <div>
-          <label htmlFor="" >firstName</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label htmlFor="">lastName</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label htmlFor="">Password</label>
-          <input type="text" />
-        </div>
-        <button type="submit"> Create an Account</button>
-      </form>
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name == "username") {
+      setUsername(value);
+    } else if (name == "password") {
+      setPassword(value);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (username == "user123" && password == '123') {
+      setIsLogged(true)
+    } else {
+      setError(true);
+    }
+
+  };
+console.log(isShowLogin, isLogged)
+  return (
+    <div className="layout bg-dark text-white">
+      { isLogged ?<Welcome name={username}/>: isShowLogin ? (
+        <>
+          <Container>
+            <Row>
+              <Col lg={8} className="m-auto">
+                <h1 className="text-center">Login</h1>
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Username: </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter your Username: "
+                      name="username"
+                      value={username}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      name="password"
+                      value={password}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Button variant="primary" type="submit" className="w-100">
+                    Submit
+                  </Button>
+                  <div className="mt-2">
+                    <span>Don't have an account</span>
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => {
+                        setIsShowLogin(false);
+                      }}
+                    >
+                      Signup
+                    </Button>
+                  </div>
+                  {error && (
+                    <Alert variant="danger">
+                      username or password is incorrect
+                    </Alert>
+                  )}
+                </Form>
+              </Col>
+            </Row>
+          </Container>
+        </>
+      ) : (
+        <>
+          <Container>
+            <Row>
+              <Col lg={8} className="m-auto">
+                <h1 className="text-center">SignUp</h1>
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Username: </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter your Username: "
+                      name="username"
+                      value={username}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      name="password"
+                      value={password}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Button variant="primary" type="submit" className="w-100">
+                    Submit
+                  </Button>
+                  <div className="mt-2">
+                    <span>Already have an account</span>
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => {
+                        setIsShowLogin(true);
+                      }}
+                    >
+                      Login
+                    </Button>
+                  </div>
+                  {error && (
+                    <Alert variant="danger">
+                      username or password is incorrect
+                    </Alert>
+                  )}
+                </Form>
+              </Col>
+            </Row>
+          </Container>
+        </>
+      )}
     </div>
   );
 }
@@ -63,12 +187,6 @@ function App() {
           <Layout />
         </div>
       </div>
-
-      {/* Navbar */}
-
-      {/* sidebar */}
-
-      {/* layout */}
     </div>
   );
 }
